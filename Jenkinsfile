@@ -10,13 +10,17 @@ pipeline {
             steps {
                 echo 'Installing Node.js dependencies...'
                 sh 'npm install'
+                sh 'npm install -g mocha || true'
             }
         }
 
         stage('Run Tests') {
             steps {
                 echo 'Running unit tests...'
-                sh 'npm test'
+             
+                sh 'chmod +x node_modules/.bin/mocha || true'
+             
+                sh 'node ./node_modules/mocha/bin/mocha.js test.js'
             }
         }
 
@@ -29,8 +33,8 @@ pipeline {
 
         stage('Deploy') {
             steps {
-                echo 'Deploying application...'
-                // Ici, vous pouvez ajouter un script de déploiement personnalisé
+                echo 'Deploying application....'
+             
             }
         }
     }
@@ -38,19 +42,11 @@ pipeline {
     post {
         success {
             echo 'Pipeline executed successfully!'
+    
         }
         failure {
             echo 'Pipeline execution failed!'
+          
         }
     }
-
-    post {
-    success {
-        slackSend (channel: '#ci-cd', message: "✅ Pipeline réussi : ${env.JOB_NAME} #${env.BUILD_NUMBER}")
-    }
-    failure {
-        slackSend (channel: '#ci-cd', message: "❌ Échec du pipeline : ${env.JOB_NAME} #${env.BUILD_NUMBER}")
-    }
-}
-
 }

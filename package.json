@@ -7,8 +7,10 @@
     "test": "mocha test.js",
     "build": "echo 'Build process complete!'"
   },
-
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "mocha": "^11.1.0"
+  }
 }
